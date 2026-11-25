@@ -2,6 +2,7 @@
   "hosting": {
     "site": "csitba-hackaiol",
     "public": "dist",
+    "cleanUrls": true,
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
