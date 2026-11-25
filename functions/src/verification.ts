@@ -15,6 +15,7 @@ import {
   normalizeEmail,
   verificationId,
 } from "./lib/otp";
+import {loadDraft} from "./lib/drafts";
 import {GMAIL_APP_PASSWORD, sendVerificationCodeEmail} from "./lib/email";
 
 const HOUR_MS = 60 * 60 * 1000;
@@ -178,5 +179,9 @@ export const hackaiolConfirmCode = onCall(async (request) => {
     return token;
   });
 
-  return {ok: true, verificationToken};
+  // The code above is the proof of ownership: only past it may an
+  // unfinished sign-up be handed back for the visitor to resume.
+  const draft = await loadDraft(email);
+
+  return {ok: true, verificationToken, draft};
 });

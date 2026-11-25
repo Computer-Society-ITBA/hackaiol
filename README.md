@@ -56,7 +56,9 @@ apps. This app is isolated from them in three ways.
 | ----------------- | -------------------------------------------- |
 | `verification.ts` | `hackaiolRequestCode`, `hackaiolConfirmCode` |
 | `signup.ts`       | `hackaiolSubmitSignup`, `hackaiolLookupTeam` |
+| `drafts.ts`       | `hackaiolSaveSignupDraft`                    |
 | `admin.ts`        | Admin SDK bootstrap pinned to `hackaiol`     |
+| `lib/drafts.ts`   | Draft doc refs, loading, session check       |
 | `lib/otp.ts`      | Code generation, hashing, rate-limit limits  |
 | `lib/team.ts`     | `teamIdFrom()`, `MAX_TEAM_SIZE` (3)          |
 | `lib/email.ts`    | Email templates and Gmail SMTP sending       |
@@ -69,6 +71,15 @@ minutes so the rest of the multi-step form can be filled in.
 same Firestore transaction that writes the `signups/{email}` doc, so
 a token cannot be replayed.
 
+An unfinished sign-up can be resumed. The form calls
+`hackaiolSaveSignupDraft` when leaving the personal and socials
+steps, and as the team is chosen, storing what was typed in
+`signupDrafts`. Coming back with the same email and confirming a new
+code makes `hackaiolConfirmCode` return that draft, so the form is
+refilled and opens on the first unfinished step. The draft is only
+handed back after the code is confirmed, and is deleted in the same
+transaction that writes the sign-up.
+
 Participation is team-only, in teams of 3. Each member signs up on
 their own and either creates a team (its name becomes the invite
 code) or joins one with that code. Team create/join, the capacity
@@ -77,7 +88,8 @@ check and the member count happen in the same transaction.
 room before submitting. `teamIdFrom()` is duplicated in
 `src/components/signup/team.ts` and must be kept in sync by hand.
 
-Firestore collections (`emailVerifications`, `signups`, `teams`) are written
+Firestore collections (`emailVerifications`, `signupDrafts`, `signups`,
+`teams`) are written
 only by these functions through the Admin SDK. `firestore.rules` is
 a deliberate deny-all.
 

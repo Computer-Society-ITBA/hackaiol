@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router'
 
-import { Button } from '@/components/ui/button'
+import { TapeTrack } from '@/components/landing/SignupCta'
 import { emptyCode, isCodeComplete } from '@/components/signup/code'
 import { TextField } from '@/components/signup/fields'
 import {
@@ -20,9 +21,12 @@ import {
   errorCode,
   lookupTeam,
   requestCode,
+  saveDraft,
   submitSignup,
   type TeamChoicePayload,
 } from '@/lib/signupApi'
+import { tapeClasses } from '@/lib/tape'
+import { cn } from '@/lib/utils'
 
 const STEPS = ['email', 'verify', 'personal', 'socials', 'team'] as const
 type StepId = (typeof STEPS)[number]
@@ -76,6 +80,38 @@ const emptyDetails: Details = {
 
 type FieldErrors = Partial<Record<keyof Details, string>>
 
+// Steps saved server-side as the visitor moves past them, so an unfinished
+// sign-up can be resumed. Mirrors STEP_FIELDS in functions/src/drafts.ts.
+const DRAFT_FIELDS = {
+  personal: [
+    'name',
+    'dni',
+    'age',
+    'university',
+    'major',
+    'gradYear',
+    'location',
+    'diet',
+  ],
+  socials: ['github', 'linkedin', 'x', 'instagram', 'website'],
+} as const satisfies Partial<Record<StepId, readonly (keyof Details)[]>>
+
+type DraftStepId = keyof typeof DRAFT_FIELDS
+
+const AUTOSAVE_DELAY_MS = 1200
+
+const teamDraft = (team: TeamState) => ({
+  teamChoice: team.choice ?? '',
+  teamName: team.name,
+  teamCode: team.code,
+})
+
+function teamFromDraft(data: Record<string, string>): TeamState | null {
+  const choice = data.teamChoice
+  if (choice !== 'join' && choice !== 'create') return null
+  return { choice, name: data.teamName ?? '', code: data.teamCode ?? '' }
+}
+
 function teamPayload(team: TeamState): TeamChoicePayload {
   if (team.choice === 'create') return { choice: 'create', name: team.name }
   return { choice: 'join', code: team.code }
@@ -99,8 +135,13 @@ export function SignupForm() {
     slug: string
     lookup: TeamLookup | null
   } | null>(null)
-  const [busy, setBusy] = useState<'code' | 'submit' | null>(null)
+  const [busy, setBusy] = useState<'code' | 'save' | 'submit' | null>(null)
   const [done, setDone] = useState(false)
+  // Step the form reopened on from a saved draft, to say so there.
+  const [resumedAt, setResumedAt] = useState<number | null>(null)
+  // Where to land after re-verifying when the verification lapsed mid-form.
+  const returnStep = useRef<number | null>(null)
+  const lastSavedTeam = useRef(JSON.stringify(teamDraft(emptyTeam)))
 
   const current: StepId = STEPS[step]
   const { cooldown, reset: resetCooldown } = useResendCooldown(
@@ -131,6 +172,29 @@ export function SignupForm() {
     }
   }, [lookupSlug])
 
+  // The team step is the last one, so there is no "continue" to save it
+  // on: it is saved as it is chosen. Nothing is reserved until the submit.
+  const { email } = details
+  useEffect(() => {
+    if (current !== 'team' || !verificationToken || done) return
+    const data = teamDraft(team)
+    const snapshot = JSON.stringify(data)
+    if (snapshot === lastSavedTeam.current) return
+    const handle = window.setTimeout(() => {
+      lastSavedTeam.current = snapshot
+      // Best-effort: the submit carries the team choice regardless.
+      saveDraft({
+        email: email.trim(),
+        verificationToken,
+        step: 'team',
+        data,
+      }).catch(() => {
+        lastSavedTeam.current = ''
+      })
+    }, AUTOSAVE_DELAY_MS)
+    return () => window.clearTimeout(handle)
+  }, [current, verificationToken, done, email, team])
+
   const set = (key: keyof Details) => (value: string) => {
     setDetails((d) => ({ ...d, [key]: value }))
     setErrors((errs) => {
@@ -150,10 +214,50 @@ export function SignupForm() {
   })
 
   const restartVerification = () => {
+    returnStep.current = null
     setVerificationToken(null)
     setCode(emptyCode)
     setCodeError('')
     setStep(0)
+  }
+
+  // The verification lapsed mid-form: confirm a new code, then come back
+  // to the step being left, with everything typed still in place.
+  const reverify = () => {
+    restartVerification()
+    returnStep.current = step
+    setErrors({ email: t('signup.validation.verificationExpired') })
+  }
+
+  /**
+   * Saves the step being left. Returns false only when the visitor can't
+   * move on; a plain network failure doesn't hold them back, since the
+   * final submit carries every field anyway.
+   */
+  const saveStep = async (id: DraftStepId): Promise<boolean> => {
+    if (!verificationToken) {
+      reverify()
+      return false
+    }
+    setBusy('save')
+    try {
+      await saveDraft({
+        email: details.email.trim(),
+        verificationToken,
+        step: id,
+        data: Object.fromEntries(
+          DRAFT_FIELDS[id].map((key) => [key, details[key].trim()]),
+        ),
+      })
+    } catch (err) {
+      if (errorCode(err) === 'failed-precondition') {
+        reverify()
+        return false
+      }
+    } finally {
+      setBusy(null)
+    }
+    return true
   }
 
   const validatePersonal = (): boolean => {
@@ -205,7 +309,40 @@ export function SignupForm() {
     try {
       const result = await confirmCode(details.email.trim(), code)
       setVerificationToken(result.verificationToken)
-      setStep((s) => s + 1)
+      let next = step + 1
+      const draft = result.draft
+      if (draft) {
+        // Anything already typed in this session is newer than the save.
+        const typed = Object.fromEntries(
+          Object.entries(details).filter(([, value]) => value.trim()),
+        )
+        const saved = Object.fromEntries(
+          Object.entries(draft.data).filter(
+            ([key]) => key in emptyDetails && key !== 'email',
+          ),
+        )
+        const restored: Details = { ...emptyDetails, ...saved, ...typed }
+        setDetails(restored)
+        const savedTeam = teamFromDraft(draft.data)
+        if (savedTeam && team.choice === null) {
+          setTeam(savedTeam)
+          lastSavedTeam.current = JSON.stringify(teamDraft(savedTeam))
+        }
+        // A draft missing a required field is not past the personal step.
+        const personalComplete = REQUIRED_PERSONAL.every((key) =>
+          restored[key].trim(),
+        )
+        if (draft.lastCompletedStep && personalComplete) {
+          next = STEPS.indexOf(draft.lastCompletedStep) + 1
+        }
+      }
+      if (returnStep.current !== null) {
+        next = returnStep.current
+        returnStep.current = null
+      } else if (draft) {
+        setResumedAt(next)
+      }
+      setStep(next)
     } catch (err) {
       const errCode = errorCode(err)
       if (errCode === 'deadline-exceeded' || errCode === 'not-found') {
@@ -244,8 +381,7 @@ export function SignupForm() {
     } catch (err) {
       const errCode = errorCode(err)
       if (errCode === 'failed-precondition') {
-        restartVerification()
-        setErrors({ email: t('signup.validation.verificationExpired') })
+        reverify()
       } else if (errCode === 'already-exists') {
         setTeamError(
           team.choice === 'create'
@@ -279,58 +415,98 @@ export function SignupForm() {
     }
     if (current === 'verify') return verify()
     if (current === 'personal') {
-      if (validatePersonal()) setStep((s) => s + 1)
+      if (validatePersonal() && (await saveStep('personal'))) {
+        setStep((s) => s + 1)
+      }
       return
     }
-    if (current === 'socials') return setStep((s) => s + 1)
+    if (current === 'socials') {
+      if (await saveStep('socials')) setStep((s) => s + 1)
+      return
+    }
     return submit()
   }
 
   if (done) {
     return (
-      <div>
-        <h1 className="mb-3 text-2xl font-semibold tracking-tight">
-          {t('signup.success.title')}
-        </h1>
-        <p className="text-muted-foreground">{t('signup.success.desc')}</p>
+      <div className="py-4">
+        <h1 className="type-title">{t('signup.success.title')}</h1>
+        <p className="type-body text-brand-text-dim mt-2 max-w-md">
+          {t('signup.success.desc')}
+        </p>
+        <Link to="/" className="btn-secondary mt-8">
+          {t('signup.backHome')}
+        </Link>
       </div>
     )
   }
 
   const canGoBack = step > 0 && current !== 'personal'
+  const submitLabel =
+    busy === 'submit'
+      ? t('signup.team.submitting')
+      : t(`signup.${current}.submit`)
 
   return (
-    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
-      <div className="mb-2">
-        <div className="text-muted-foreground mb-3 flex items-center justify-between text-sm">
-          <span>
-            {t('signup.stepOf', { current: step + 1, total: STEPS.length })}
-          </span>
+    <form onSubmit={onSubmit} noValidate className="flex flex-col">
+      <div className="mb-10">
+        <div className="mb-6 flex h-9 items-center justify-between gap-4">
+          <div
+            role="img"
+            aria-label={t('signup.stepOf', {
+              current: step + 1,
+              total: STEPS.length,
+            })}
+            className="flex items-center gap-1.5"
+          >
+            {STEPS.map((id, i) => (
+              <span
+                key={id}
+                className={cn(
+                  'h-1.5 rounded-full transition-all duration-500',
+                  i === step
+                    ? 'bg-brand-green w-6'
+                    : i < step
+                      ? 'bg-brand-green/60 w-1.5'
+                      : 'w-1.5 bg-white/20',
+                )}
+              />
+            ))}
+          </div>
           {canGoBack && (
             <button
               type="button"
               onClick={() => setStep((s) => s - 1)}
-              className="hover:text-foreground transition-colors"
+              className="group btn-secondary pl-2.5"
             >
+              <svg
+                viewBox="0 0 16 16"
+                aria-hidden="true"
+                className="size-4 transition-transform duration-200 group-hover:-translate-x-0.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M10 3.5 5.5 8l4.5 4.5" />
+              </svg>
               {t('signup.back')}
             </button>
           )}
         </div>
-        <div className="bg-border mb-6 h-0.5 w-full rounded-full">
-          <div
-            className="bg-primary h-0.5 rounded-full transition-[width] duration-500"
-            style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
-          />
-        </div>
-        <h1 className="mb-2 text-2xl font-semibold tracking-tight">
-          {t(`signup.${current}.title`)}
-        </h1>
-        <p className="text-muted-foreground break-words">
+        <h1 className="type-title">{t(`signup.${current}.title`)}</h1>
+        <p className="type-body text-brand-text-dim mt-2 break-words">
           {t(`signup.${current}.desc`, {
             email: details.email.trim(),
             max: MAX_TEAM_SIZE,
           })}
         </p>
+        {resumedAt === step && (
+          <p role="status" className="type-small text-brand-green mt-3">
+            {t('signup.resumed')}
+          </p>
+        )}
       </div>
 
       {current === 'email' && (
@@ -356,12 +532,12 @@ export function SignupForm() {
             label={t('signup.verify.codeLabel')}
             error={codeError}
           />
-          <div className="text-muted-foreground flex flex-wrap gap-x-5 gap-y-1 text-sm">
+          <div className="mb-3 flex flex-wrap gap-2">
             <button
               type="button"
               disabled={cooldown > 0 || busy !== null}
               onClick={sendCode}
-              className="hover:text-foreground underline-offset-4 transition-colors hover:underline disabled:cursor-not-allowed disabled:no-underline disabled:opacity-60"
+              className="btn-secondary"
             >
               {cooldown > 0
                 ? t('signup.verify.resendIn', { seconds: cooldown })
@@ -370,7 +546,7 @@ export function SignupForm() {
             <button
               type="button"
               onClick={restartVerification}
-              className="hover:text-foreground underline-offset-4 transition-colors hover:underline"
+              className="btn-secondary"
             >
               {t('signup.verify.changeEmail')}
             </button>
@@ -379,7 +555,7 @@ export function SignupForm() {
       )}
 
       {current === 'personal' && (
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-x-4 gap-y-4 sm:grid-cols-2">
           <TextField
             {...field('name')}
             autoComplete="name"
@@ -411,7 +587,7 @@ export function SignupForm() {
       )}
 
       {current === 'socials' && (
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-x-4 gap-y-4 sm:grid-cols-2">
           <TextField
             {...field('github')}
             placeholder={t('signup.placeholders.github')}
@@ -450,20 +626,21 @@ export function SignupForm() {
         />
       )}
 
-      <div className="mt-2 flex flex-col gap-3">
-        <Button
+      <div className="mt-6 flex flex-col items-start gap-5">
+        <button
           type="submit"
-          size="lg"
           disabled={busy !== null}
           aria-busy={busy !== null}
-          className="w-full"
+          aria-label={submitLabel}
+          className={cn(
+            tapeClasses,
+            'focus-visible:ring-brand-green/50 h-12 w-60 -rotate-1 text-base outline-none focus-visible:rotate-0 focus-visible:ring-[3px] disabled:cursor-wait disabled:opacity-60 sm:h-14 sm:w-64 sm:text-lg',
+          )}
         >
-          {busy === 'submit'
-            ? t('signup.team.submitting')
-            : t(`signup.${current}.submit`)}
-        </Button>
+          <TapeTrack key={submitLabel} label={submitLabel} />
+        </button>
         {current === 'team' && (
-          <p className="text-muted-foreground text-center text-xs">
+          <p className="type-small text-brand-text-dim max-w-md">
             {t('signup.consent')}
           </p>
         )}

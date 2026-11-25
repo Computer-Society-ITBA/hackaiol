@@ -12,12 +12,12 @@ export const resources = {
   es: { translation: es },
 } as const
 
-export const supportedLngs = ['es', 'en'] as const
-export type SupportedLng = (typeof supportedLngs)[number]
+const supportedLngs = ['es', 'en'] as const
 
-// Spanish is the default for everyone. English is only used when someone
-// picks it from the header switcher (remembered in localStorage) or opens
-// a link with ?lang=en. The browser language is deliberately ignored.
+// The language follows the browser: any Spanish (es-AR, es-ES...) gets
+// Spanish, any English gets English, anything else falls back to Spanish.
+// There is no switcher, so nothing is remembered. A ?lang=en link still
+// forces a language, which is handy for testing.
 void i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -25,12 +25,14 @@ void i18n
     resources,
     fallbackLng: 'es',
     supportedLngs: [...supportedLngs],
+    nonExplicitSupportedLngs: true,
+    load: 'languageOnly',
     defaultNS,
     interpolation: { escapeValue: false },
     detection: {
-      order: ['querystring', 'localStorage'],
+      order: ['querystring', 'navigator'],
       lookupQuerystring: 'lang',
-      caches: ['localStorage'],
+      caches: [],
     },
   })
 

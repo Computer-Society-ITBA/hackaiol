@@ -12,6 +12,7 @@ import {
   sendSignupConfirmationEmail,
   type ConfirmationTeam,
 } from "./lib/email";
+import {draftRef} from "./lib/drafts";
 import {isValidEmail, normalizeEmail, verificationId} from "./lib/otp";
 import {MAX_TEAM_SIZE, teamIdFrom} from "./lib/team";
 
@@ -29,7 +30,7 @@ const MAX_FIELD_LENGTH = 200;
  * @param {string} field Field name used in the error message.
  * @return {string} The trimmed string, or "" when absent.
  */
-function optionalString(value: unknown, field: string): string {
+export function optionalString(value: unknown, field: string): string {
   if (value === undefined || value === null) return "";
   if (typeof value !== "string") {
     throw new HttpsError("invalid-argument", `${field} must be a string.`);
@@ -222,12 +223,18 @@ export const hackaiolSubmitSignup = onCall(
         createdAt: now,
       });
       tx.update(verRef, {consumedAt: now});
+      // The sign-up is complete, so the saved progress is no longer needed.
+      tx.delete(draftRef(email));
     });
 
     // Best-effort: the signup itself already succeeded, so a confirmation
     // email failure shouldn't fail the request.
     try {
-      const teamInfo = await loadTeamConfirmationInfo(teamRef, teamName);
+      const teamInfo = await loadTeamConfirmationInfo(
+        teamRef,
+        teamName,
+        email,
+      );
       await sendSignupConfirmationEmail(email, name, teamInfo);
     } catch (err) {
       logger.error("Failed to send signup confirmation email", {email, err});
@@ -239,21 +246,38 @@ export const hackaiolSubmitSignup = onCall(
 
 /**
  * Builds the team info for the confirmation email, re-reading the team
- * doc so the member count reflects this signup's own join or create.
+ * doc so the member count reflects this signup's own join or create, and
+ * loading the name and email of the teammates who signed up before.
  * @param {DocumentReference} teamRef The team doc reference.
  * @param {string | null} teamName The team name, already known for
  *   "create".
+ * @param {string} email The email of who is signing up, left out of the
+ *   teammates list.
  * @return {Promise<ConfirmationTeam>} Team info to email.
  */
 async function loadTeamConfirmationInfo(
   teamRef: DocumentReference,
   teamName: string | null,
+  email: string,
 ): Promise<ConfirmationTeam> {
   const data = (await teamRef.get()).data();
+  const otherEmails = ((data?.memberEmails as string[] | undefined) ?? [])
+    .filter((memberEmail) => memberEmail !== email);
+  const snaps = otherEmails.length ?
+    await db.getAll(
+      ...otherEmails.map((memberEmail) =>
+        db.collection("signups").doc(memberEmail),
+      ),
+    ) :
+    [];
   return {
     name: (data?.name as string | undefined) ?? teamName ?? "",
     code: teamRef.id,
     memberCount: (data?.memberCount as number | undefined) ?? 1,
+    teammates: snaps.map((snap, i) => ({
+      name: (snap.data()?.name as string | undefined) ?? "",
+      email: otherEmails[i],
+    })),
   };
 }
 

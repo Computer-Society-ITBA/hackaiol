@@ -6,11 +6,11 @@ export function AboutSection() {
   const { t } = useTranslation()
   return (
     <Section id="idea" label={t('about.label')}>
-      <p className="text-brand-text-dim max-w-4xl text-3xl leading-snug font-light sm:text-[2.6rem]">
+      <p className="text-brand-text-dim max-w-3xl text-xl leading-snug sm:text-3xl">
         <Trans
           i18nKey="about.statement"
           components={{
-            strong: <strong className="font-semibold text-white" />,
+            strong: <strong className="font-bold text-white" />,
           }}
         />
       </p>
@@ -18,7 +18,7 @@ export function AboutSection() {
         href="https://mcp.invertironline.com/"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-brand-green mt-8 inline-block text-lg font-semibold underline decoration-2 underline-offset-[6px]"
+        className="btn-secondary mt-6"
       >
         {t('about.link')}
       </a>

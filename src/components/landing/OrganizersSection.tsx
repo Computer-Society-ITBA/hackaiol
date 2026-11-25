@@ -13,32 +13,30 @@ export function OrganizersSection() {
   const { t } = useTranslation()
   return (
     <Section id="organizan" label={t('organizers.label')}>
-      <div className="grid gap-14 md:grid-cols-2 md:gap-0 md:divide-x md:divide-white/15">
+      <div className="grid gap-10 md:grid-cols-2 md:gap-0 md:divide-x md:divide-white/15">
         <div className="md:pr-10">
           <a
             href="https://www.csitba.com.ar/"
             target="_blank"
             rel="noopener noreferrer"
-            className="mb-6 inline-block"
+            className="mb-5 inline-block"
           >
             <img
               src="/brand/cs-logo.png"
               alt="IEEE Computer Society ITBA Student Branch Chapter"
-              className="h-16 w-auto"
+              className="h-12 w-auto"
             />
           </a>
-          <p className="text-brand-text-dim mb-8 text-lg">
+          <p className="type-body text-brand-text-dim mb-6">
             {t('organizers.cs.desc')}
           </p>
           <dl className="flex flex-wrap gap-x-8 gap-y-4">
             {CS_STATS.map((stat) => (
               <div key={stat.key} className="flex flex-col-reverse">
-                <dt className="text-brand-text-dim text-sm">
+                <dt className="type-small text-brand-text-dim">
                   {t(`organizers.cs.stats.${stat.key}`)}
                 </dt>
-                <dd className="text-brand-green text-3xl font-extrabold">
-                  {stat.value}
-                </dd>
+                <dd className="text-2xl font-bold">{stat.value}</dd>
               </div>
             ))}
           </dl>
@@ -49,15 +47,15 @@ export function OrganizersSection() {
             href="https://www.invertironline.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="mb-6 inline-block"
+            className="mb-5 inline-block"
           >
             <img
               src="/brand/iol-logo.png"
               alt="IOL Inversiones"
-              className="h-14 w-auto"
+              className="h-10 w-auto"
             />
           </a>
-          <p className="text-brand-text-dim text-lg">
+          <p className="type-body text-brand-text-dim">
             {t('organizers.iol.desc')}
           </p>
         </div>

@@ -69,7 +69,7 @@ const EVENT_LINKS = [
 ] as const
 
 const linkClass =
-  'text-brand-text-dim text-[0.95rem] transition-colors hover:text-white'
+  'type-small text-brand-text-dim transition-colors hover:text-white'
 
 export function Footer() {
   const { t } = useTranslation()
@@ -90,7 +90,7 @@ export function Footer() {
                 className="h-12 w-auto"
               />
             </a>
-            <p className="text-brand-text-dim text-[0.95rem]">
+            <p className="type-small text-brand-text-dim">
               {t('footer.brandDesc')}
             </p>
             <div className="-ml-0.5 flex gap-4">
@@ -115,7 +115,7 @@ export function Footer() {
 
           <div className="flex flex-wrap gap-16">
             <div className="flex flex-col gap-3">
-              <h2 className="text-brand-green text-sm font-semibold tracking-[0.14em] uppercase">
+              <h2 className="type-eyebrow text-brand-green">
                 {t('footer.columns.event')}
               </h2>
               {EVENT_LINKS.map((link) => (
@@ -128,32 +128,16 @@ export function Footer() {
               </Link>
             </div>
             <div className="flex flex-col gap-3">
-              <h2 className="text-brand-green text-sm font-semibold tracking-[0.14em] uppercase">
+              <h2 className="type-eyebrow text-brand-green">
                 {t('footer.columns.contact')}
               </h2>
               <a href={`mailto:${EMAIL}`} className={linkClass}>
                 {EMAIL}
               </a>
-              <a
-                href="https://www.csitba.com.ar/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={linkClass}
-              >
-                csitba.com.ar
-              </a>
-              <a
-                href="https://mcp.invertironline.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={linkClass}
-              >
-                {t('footer.links.mcp')}
-              </a>
             </div>
           </div>
         </div>
-        <p className="text-brand-text-dim/70 border-t border-white/10 pt-6 text-sm">
+        <p className="type-small text-brand-text-dim">
           {t('footer.copyright')}
         </p>
       </div>

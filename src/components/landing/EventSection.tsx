@@ -1,38 +1,37 @@
 import { useTranslation } from 'react-i18next'
 
 import { Section } from '@/components/landing/Section'
+import { cn } from '@/lib/utils'
 
-const PERKS = [
-  { key: 'food', hasDesc: true },
-  { key: 'recruiting', hasDesc: true },
-  { key: 'prizes', hasDesc: false },
-  { key: 'networking', hasDesc: false },
-] as const
+const PERKS = ['food', 'recruiting', 'prizes', 'networking'] as const
 
+/**
+ * Each perk as one oversized word, solid and outlined in turns. On hover
+ * the word fills green and nudges right.
+ */
 export function EventSection() {
   const { t } = useTranslation()
   return (
     <Section id="dia" label={t('event.label')}>
-      <ul className="grid gap-x-12 gap-y-10 sm:grid-cols-2">
-        {PERKS.map(({ key, hasDesc }) => (
-          <li key={key} className="flex items-start gap-3">
-            <svg
-              viewBox="0 0 10 9"
-              aria-hidden="true"
-              className="fill-brand-green mt-3 h-3 w-3.5 flex-shrink-0 sm:mt-3.5"
-            >
-              <path d="M5 0l5 9H0z" />
-            </svg>
-            <div>
-              <p className="text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
-                {t(`event.perks.${key}.title`)}
-              </p>
-              {hasDesc && (
-                <p className="text-brand-text-dim mt-2 text-lg">
-                  {t(`event.perks.${key}.desc`)}
-                </p>
+      <ul className="border-t border-white/15 sm:grid sm:grid-cols-[auto_1fr] sm:gap-x-6">
+        {PERKS.map((key, i) => (
+          <li
+            key={key}
+            className="group border-b border-white/15 py-1 sm:col-span-2 sm:grid sm:grid-cols-subgrid sm:items-center"
+          >
+            <span
+              className={cn(
+                'group-hover:text-brand-green block text-5xl leading-[0.95] font-extrabold tracking-tight uppercase transition-[color,translate] duration-300 group-hover:translate-x-2 sm:text-6xl',
+                i % 2
+                  ? 'text-transparent [-webkit-text-stroke:1.5px_var(--brand-green)]'
+                  : 'text-white',
               )}
-            </div>
+            >
+              {t(`event.perks.${key}.word`)}
+            </span>
+            <span className="text-brand-text-dim block max-w-72 pb-1.5 text-sm transition-colors duration-300 group-hover:text-white sm:pb-0">
+              {t(`event.perks.${key}.desc`)}
+            </span>
           </li>
         ))}
       </ul>

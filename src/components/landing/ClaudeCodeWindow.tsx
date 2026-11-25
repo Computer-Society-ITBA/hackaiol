@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils'
 
 const TOOLS = [
   { name: 'get_portfolio', args: '()', result: 'portfolio' },
-  { name: 'get_asset_quote', args: '("ASML")', result: 'quote' },
   {
     name: 'create_stop_loss_or_take_profit',
     args: '("ASML", "+12%")',
@@ -25,6 +24,76 @@ function prefersReducedMotion() {
   return (
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+}
+
+function Transcript({
+  prompt,
+  stage,
+  typed,
+  toolsDone,
+}: {
+  prompt: string
+  stage: Stage
+  typed: number
+  toolsDone: number
+}) {
+  const { t } = useTranslation()
+  const showTools = stage === 'tools' || stage === 'answer'
+  return (
+    <div className="space-y-3">
+      <div className="rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2">
+        <span className="text-brand-orange mr-2">&gt;</span>
+        {prompt.slice(0, typed)}
+        {stage === 'typing' && (
+          <span className="caret bg-brand-green ml-0.5 inline-block h-[1.1em] w-[0.55em] translate-y-[0.2em]" />
+        )}
+      </div>
+
+      {stage === 'thinking' && (
+        <div className="text-brand-orange flex items-center gap-2">
+          <ClaudeSpark className="size-4 animate-spin [animation-duration:2.4s]" />
+          <span className="animate-pulse">{t('hero.terminal.thinking')}</span>
+        </div>
+      )}
+
+      {showTools &&
+        TOOLS.slice(0, Math.min(toolsDone + 1, TOOLS.length)).map((tool, i) => {
+          const done = i < toolsDone
+          return (
+            <div
+              key={tool.name}
+              className="animate-in fade-in slide-in-from-bottom-1 duration-300"
+            >
+              <div className="flex items-start gap-2">
+                <span
+                  className={cn(
+                    'mt-[0.45em] size-2 flex-shrink-0 rounded-full',
+                    done ? 'bg-brand-green' : 'animate-pulse bg-white/60',
+                  )}
+                />
+                <span className="min-w-0 break-all">
+                  <span className="font-semibold text-white">{tool.name}</span>
+                  <span className="text-brand-text-dim">{tool.args}</span>
+                </span>
+              </div>
+              {done && (
+                <div className="text-brand-text-dim animate-in fade-in pl-4 duration-300">
+                  <span className="mr-2 text-white/40">⎿</span>
+                  {t(`hero.terminal.results.${tool.result}`)}
+                </div>
+              )}
+            </div>
+          )
+        })}
+
+      {stage === 'answer' && (
+        <div className="animate-in fade-in slide-in-from-bottom-1 flex items-start gap-2 pt-1 font-sans text-[15px] text-white duration-500 sm:text-base">
+          <ClaudeSpark className="mt-1 size-4 flex-shrink-0" />
+          <span>{t('hero.terminal.answer')}</span>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -66,8 +135,6 @@ export function ClaudeCodeWindow({ className }: { className?: string }) {
     return () => window.clearTimeout(timer)
   }, [reduced, stage, typed, toolsDone, prompt.length])
 
-  const showTools = stage === 'tools' || stage === 'answer'
-
   return (
     <div aria-hidden="true" className={cn('relative', className)}>
       <div className="bg-brand-green/30 absolute -top-10 -left-8 size-48 rounded-full blur-3xl" />
@@ -96,68 +163,26 @@ export function ClaudeCodeWindow({ className }: { className?: string }) {
             </span>
           </div>
 
-          <div className="relative min-h-[23rem] space-y-3 px-4 py-4 font-mono text-[12.5px] leading-relaxed sm:min-h-[19rem] sm:px-5 sm:text-sm">
-            <div className="rounded-lg border border-white/10 bg-white/[0.05] px-3 py-2">
-              <span className="text-brand-orange mr-2">&gt;</span>
-              {prompt.slice(0, typed)}
-              {stage === 'typing' && (
-                <span className="caret bg-brand-green ml-0.5 inline-block h-[1.1em] w-[0.55em] translate-y-[0.2em]" />
-              )}
+          {/* An invisible copy of the finished transcript sits under the live
+              one in the same grid cell, so the window keeps its final height
+              while the lines appear. */}
+          <div className="relative grid px-4 py-4 font-mono text-[12.5px] leading-relaxed sm:px-5 sm:text-sm">
+            <div className="invisible [grid-area:1/1]">
+              <Transcript
+                prompt={prompt}
+                stage="answer"
+                typed={prompt.length}
+                toolsDone={TOOLS.length}
+              />
             </div>
-
-            {stage === 'thinking' && (
-              <div className="text-brand-orange flex items-center gap-2">
-                <ClaudeSpark className="size-4 animate-spin [animation-duration:2.4s]" />
-                <span className="animate-pulse">
-                  {t('hero.terminal.thinking')}
-                </span>
-              </div>
-            )}
-
-            {showTools &&
-              TOOLS.slice(0, Math.min(toolsDone + 1, TOOLS.length)).map(
-                (tool, i) => {
-                  const done = i < toolsDone
-                  return (
-                    <div
-                      key={tool.name}
-                      className="animate-in fade-in slide-in-from-bottom-1 duration-300"
-                    >
-                      <div className="flex items-start gap-2">
-                        <span
-                          className={cn(
-                            'mt-[0.45em] size-2 flex-shrink-0 rounded-full',
-                            done
-                              ? 'bg-brand-green'
-                              : 'animate-pulse bg-white/60',
-                          )}
-                        />
-                        <span className="min-w-0 break-all">
-                          <span className="font-semibold text-white">
-                            {tool.name}
-                          </span>
-                          <span className="text-brand-text-dim">
-                            {tool.args}
-                          </span>
-                        </span>
-                      </div>
-                      {done && (
-                        <div className="text-brand-text-dim animate-in fade-in pl-4 duration-300">
-                          <span className="mr-2 text-white/40">⎿</span>
-                          {t(`hero.terminal.results.${tool.result}`)}
-                        </div>
-                      )}
-                    </div>
-                  )
-                },
-              )}
-
-            {stage === 'answer' && (
-              <div className="animate-in fade-in slide-in-from-bottom-1 flex items-start gap-2 pt-1 font-sans text-[15px] text-white duration-500 sm:text-base">
-                <ClaudeSpark className="mt-1 size-4 flex-shrink-0" />
-                <span>{t('hero.terminal.answer')}</span>
-              </div>
-            )}
+            <div className="[grid-area:1/1]">
+              <Transcript
+                prompt={prompt}
+                stage={stage}
+                typed={typed}
+                toolsDone={toolsDone}
+              />
+            </div>
           </div>
         </div>
       </div>

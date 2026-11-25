@@ -10,7 +10,6 @@
       "thinking": "Reflexionando…",
       "results": {
         "portfolio": "ASML está en tu cartera",
-        "quote": "Precio actual y caja de puntas obtenidos",
         "created": "Take Profit creado"
       },
       "answer": "Listo. Dejé un Take Profit en ASML al 12% sobre tu precio de compra."
@@ -27,22 +26,24 @@
     },
     "place": {
       "label": "Sede",
-      "value": "A confirmar"
+      "value": "TBA"
     },
     "perks": {
       "food": {
-        "title": "Comida incluida",
-        "desc": "Nos encargamos de la comida todo el día. Solo traé tu laptop."
+        "word": "Comida",
+        "desc": "Nos encargamos de la comida todo el día."
       },
       "recruiting": {
-        "title": "Gente de IOL en el evento",
-        "desc": "Va a haber gente de IOL durante el día. Es una buena oportunidad para que conozcan tu trabajo."
+        "word": "Mentores",
+        "desc": "Te acompañan durante todo el día y conocen tu proyecto."
       },
       "prizes": {
-        "title": "Premios para los mejores proyectos"
+        "word": "Premios",
+        "desc": "Para los mejores proyectos."
       },
       "networking": {
-        "title": "After de networking al cierre"
+        "word": "After",
+        "desc": "Al cierre, con los equipos y los organizadores."
       }
     },
     "label": "El día"
@@ -100,7 +101,7 @@
       }
     },
     "iol": {
-      "desc": "IOL invertironline desarrolló el MCP sobre el que se construyen los proyectos. Con él, cualquier cliente de IOL puede conectar su cuenta a su asistente de IA para consultar la cartera, analizar el mercado y operar, eligiendo qué puede hacer la IA y revocando el acceso cuando quiera. Durante el día va a haber gente de IOL en el evento."
+      "desc": "IOL Inversiones es una plataforma argentina para invertir online. Como marca empleadora, contrata e invierte en jóvenes que trabajan en tecnología, y hace años acompaña a Computer Society ITBA como sponsor."
     },
     "label": "Organizan"
   },
@@ -112,12 +113,13 @@
     "optional": "opcional",
     "stepOf": "Paso {{current}} de {{total}}",
     "back": "Volver",
+    "resumed": "Guardamos tu progreso. Seguí desde donde lo dejaste.",
     "steps": {
       "team": "Equipo"
     },
     "email": {
       "title": "Inscripción",
-      "desc": "Todo lo del evento te va a llegar a este email.",
+      "desc": "Vamos a usar este email para todas las comunicaciones del evento.",
       "submit": "Enviar código"
     },
     "verify": {
@@ -215,6 +217,12 @@
       "team": "Creá un equipo o sumate a uno con su código",
       "teamNotFound": "No encontramos ningún equipo con ese código",
       "teamCodeTaken": "Ya existe un equipo con ese nombre. Probá con otro."
+    },
+    "pass": {
+      "team": {
+        "label": "Equipo",
+        "value": "{{max}} personas"
+      }
     }
   },
   "notFound": {
@@ -231,8 +239,7 @@
       "idea": "La idea",
       "ideas": "Ideas para arrancar",
       "day": "El día",
-      "organizers": "Organizan",
-      "mcp": "MCP de IOL"
+      "organizers": "Organizan"
     },
     "copyright": "© 2026 Computer Society ITBA"
   },
@@ -241,7 +248,6 @@
     "instagram": "Instagram",
     "email": "Email",
     "youtube": "YouTube",
-    "linkedin": "LinkedIn",
-    "language": "Idioma"
+    "linkedin": "LinkedIn"
   }
 }

@@ -39,3 +39,7 @@ ui-debug.log
 *.njsproj
 *.sln
 *.sw?
+
+# Local AI assistant instructions
+AGENTS.md
+CLAUDE.md

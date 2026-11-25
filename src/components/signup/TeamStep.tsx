@@ -45,7 +45,7 @@ export function TeamStep({
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4">
       <fieldset aria-describedby={error ? 'team-error' : undefined}>
         <legend className="sr-only">{t('signup.steps.team')}</legend>
         <div className="flex flex-col gap-2">
@@ -71,10 +71,10 @@ export function TeamStep({
                   }
                   className="sr-only"
                 />
-                <span className="block font-semibold">
+                <span className="type-heading block">
                   {t(`signup.team.choices.${choice}.title`)}
                 </span>
-                <span className="text-muted-foreground block text-sm">
+                <span className="type-small text-brand-text-dim block">
                   {t(`signup.team.choices.${choice}.desc`)}
                 </span>
               </label>
@@ -85,34 +85,54 @@ export function TeamStep({
       </fieldset>
 
       {value.choice === 'create' && (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           <TextField
             label={t('signup.fields.teamName')}
             value={value.name}
             onChange={(name) => onChange({ ...value, name })}
           />
           {generatedId && (
-            <div className="border-brand-green/40 bg-brand-green/[0.07] rounded-xl border p-4">
-              <div className="flex items-center justify-between gap-3">
+            <div>
+              {/* A coupon with the code, dashed like the pass's stub. */}
+              <div className="border-brand-green/50 bg-brand-green/[0.06] flex items-center justify-between gap-4 rounded-xl border border-dashed py-4 pr-4 pl-5">
                 <div className="min-w-0">
-                  <p className="text-muted-foreground text-sm">
+                  <p className="type-eyebrow text-brand-green">
                     {t('signup.team.create.codeLabel')}
                   </p>
-                  <code className="text-brand-green block truncate font-mono text-lg font-semibold">
+                  <code className="type-title mt-1 block truncate font-mono tracking-wide">
                     {generatedId}
                   </code>
                 </div>
                 <button
                   type="button"
                   onClick={copyId}
-                  className="text-muted-foreground hover:text-foreground flex-shrink-0 text-sm underline-offset-4 transition-colors hover:underline"
+                  className="btn-secondary flex-shrink-0"
                 >
+                  <svg
+                    viewBox="0 0 16 16"
+                    aria-hidden="true"
+                    className="size-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    {copied ? (
+                      <path d="M3.5 8.5 6.5 11.5 12.5 4.5" />
+                    ) : (
+                      <>
+                        <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
+                        <path d="M10.5 3.5v-.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h.5" />
+                      </>
+                    )}
+                  </svg>
                   {copied
                     ? t('signup.team.create.copied')
                     : t('signup.team.create.copy')}
                 </button>
               </div>
-              <p className="text-muted-foreground mt-2 text-sm">
+              <p className="type-small text-brand-text-dim mt-2 mb-3">
                 {t('signup.team.create.hint', { max: MAX_TEAM_SIZE })}
               </p>
             </div>
@@ -121,38 +141,29 @@ export function TeamStep({
       )}
 
       {value.choice === 'join' && (
-        <div className="flex flex-col gap-2">
-          <TextField
-            label={t('signup.fields.teamCode')}
-            value={value.code}
-            onChange={(code) => onChange({ ...value, code })}
-          />
-          {lookupLoading && (
-            <p className="text-muted-foreground text-sm">
-              {t('signup.team.join.checking')}
-            </p>
-          )}
-          {showLookup && lookup && !lookup.exists && (
-            <p className="text-destructive text-sm">
-              {t('signup.validation.teamNotFound')}
-            </p>
-          )}
-          {showLookup && lookup?.exists && (
-            <p
-              className={cn(
-                'text-sm',
-                lookup.isFull ? 'text-destructive' : 'text-muted-foreground',
-              )}
-            >
-              {lookup.isFull
-                ? t('signup.team.join.full', { max: MAX_TEAM_SIZE })
-                : t('signup.team.join.members', {
-                    taken: lookup.memberCount,
-                    max: MAX_TEAM_SIZE,
-                  })}
-            </p>
-          )}
-        </div>
+        <TextField
+          label={t('signup.fields.teamCode')}
+          value={value.code}
+          onChange={(code) => onChange({ ...value, code })}
+          hint={
+            lookupLoading ? (
+              t('signup.team.join.checking')
+            ) : showLookup && lookup && !lookup.exists ? (
+              <span className="text-destructive">
+                {t('signup.validation.teamNotFound')}
+              </span>
+            ) : showLookup && lookup?.exists ? (
+              <span className={lookup.isFull ? 'text-destructive' : undefined}>
+                {lookup.isFull
+                  ? t('signup.team.join.full', { max: MAX_TEAM_SIZE })
+                  : t('signup.team.join.members', {
+                      taken: lookup.memberCount,
+                      max: MAX_TEAM_SIZE,
+                    })}
+              </span>
+            ) : undefined
+          }
+        />
       )}
     </div>
   )

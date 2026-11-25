@@ -10,7 +10,6 @@
       "thinking": "Thinking…",
       "results": {
         "portfolio": "ASML is in your portfolio",
-        "quote": "Current price and order book retrieved",
         "created": "Take Profit created"
       },
       "answer": "Done. I set a Take Profit on ASML at 12% above your purchase price."
@@ -31,18 +30,20 @@
     },
     "perks": {
       "food": {
-        "title": "Food included",
-        "desc": "We take care of food all day. Just bring your laptop."
+        "word": "Food",
+        "desc": "We take care of food all day."
       },
       "recruiting": {
-        "title": "People from IOL at the event",
-        "desc": "People from IOL will be around during the day. A good chance for them to see your work."
+        "word": "Mentors",
+        "desc": "They are with you all day and get to know your project."
       },
       "prizes": {
-        "title": "Prizes for the best projects"
+        "word": "Prizes",
+        "desc": "For the best projects."
       },
       "networking": {
-        "title": "Networking after party at the close"
+        "word": "After",
+        "desc": "At the close, with the teams and the organizers."
       }
     },
     "label": "The day"
@@ -100,7 +101,7 @@
       }
     },
     "iol": {
-      "desc": "IOL invertironline built the MCP the projects are built on. With it, any IOL client can connect their account to their AI assistant to check their portfolio, analyze the market and trade, choosing what the AI can do and revoking access whenever they want. People from IOL will be around during the day."
+      "desc": "IOL Inversiones is an Argentine online investment platform. As an employer brand, it hires and invests in young people working in tech, and it has sponsored Computer Society ITBA for years."
     },
     "label": "Organized by"
   },
@@ -112,12 +113,13 @@
     "optional": "optional",
     "stepOf": "Step {{current}} of {{total}}",
     "back": "Back",
+    "resumed": "We saved your progress. Pick up where you left off.",
     "steps": {
       "team": "Team"
     },
     "email": {
       "title": "Sign up",
-      "desc": "Everything about the event will reach you at this email.",
+      "desc": "We will use this email for all event communications.",
       "submit": "Send code"
     },
     "verify": {
@@ -215,6 +217,12 @@
       "team": "Create a team or join one with its code",
       "teamNotFound": "No team found with that code",
       "teamCodeTaken": "A team with that name already exists. Try another one."
+    },
+    "pass": {
+      "team": {
+        "label": "Team",
+        "value": "{{max}} people"
+      }
     }
   },
   "notFound": {
@@ -231,8 +239,7 @@
       "idea": "The idea",
       "ideas": "Ideas to get started",
       "day": "The day",
-      "organizers": "Organized by",
-      "mcp": "IOL MCP"
+      "organizers": "Organized by"
     },
     "copyright": "© 2026 Computer Society ITBA"
   },
@@ -241,7 +248,6 @@
     "instagram": "Instagram",
     "email": "Email",
     "youtube": "YouTube",
-    "linkedin": "LinkedIn",
-    "language": "Language"
+    "linkedin": "LinkedIn"
   }
 }

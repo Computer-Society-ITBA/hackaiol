@@ -23,7 +23,7 @@ export function Ticker() {
     </span>
   ))
   return (
-    <div aria-hidden="true" className="relative z-10 py-8">
+    <div aria-hidden="true" className="relative z-10 pt-4 pb-10">
       <div className="bg-brand-green text-brand-ink -mx-[5vw] -rotate-[2.5deg] overflow-hidden py-3.5 text-lg shadow-[0_20px_50px_-20px_rgb(0_211_127/0.5)]">
         <div className="ticker-track flex w-max">
           <div className="flex">{row}</div>

@@ -35,3 +35,21 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_WEBPAGE_36E40 }}
           channelId: live
           projectId: webpage-36e40
+      # The functions predeploy hooks (lint + build) run inside the
+      # deploy container and need functions/node_modules to exist.
+      - name: Install Functions dependencies
+        run: npm ci
+        working-directory: functions
+      # Same action and tag as quantum-jam-csitba: the predeploy hooks run
+      # inside this container, so its bundled Node lints and builds
+      # functions/. Scoped to the hackaiol codebase and the hackaiol
+      # Firestore database (rules + indexes), so the other apps in this
+      # project are never touched.
+      - name: Deploy Firebase Functions and Firestore rules
+        uses: w9jds/firebase-action@v15.30.0
+        with:
+          args: >-
+            deploy --project webpage-36e40 --non-interactive
+            --only functions:hackaiol,firestore
+        env:
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_WEBPAGE_36E40 }}
