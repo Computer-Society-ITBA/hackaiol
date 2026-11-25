@@ -1,0 +1,247 @@
+{
+  "hero": {
+    "titleStart": "Hacka",
+    "titleEnd": "IOL",
+    "subtitle": "Una hackathon de un día para construir con IA sobre el MCP de IOL Inversiones.",
+    "cta": "Inscribirme",
+    "terminal": {
+      "status": "IOL MCP",
+      "prompt": "Usando el MCP de IOL, colocá un Take Profit en ASML al 12%",
+      "thinking": "Reflexionando…",
+      "results": {
+        "portfolio": "ASML está en tu cartera",
+        "quote": "Precio actual y caja de puntas obtenidos",
+        "created": "Take Profit creado"
+      },
+      "answer": "Listo. Dejé un Take Profit en ASML al 12% sobre tu precio de compra."
+    }
+  },
+  "event": {
+    "date": {
+      "label": "Fecha",
+      "value": "12 DIC"
+    },
+    "time": {
+      "label": "Horario",
+      "value": "11 a 19 h"
+    },
+    "place": {
+      "label": "Sede",
+      "value": "A confirmar"
+    },
+    "perks": {
+      "food": {
+        "title": "Comida incluida",
+        "desc": "Nos encargamos de la comida todo el día. Solo traé tu laptop."
+      },
+      "recruiting": {
+        "title": "Gente de IOL en el evento",
+        "desc": "Va a haber gente de IOL durante el día. Es una buena oportunidad para que conozcan tu trabajo."
+      },
+      "prizes": {
+        "title": "Premios para los mejores proyectos"
+      },
+      "networking": {
+        "title": "After de networking al cierre"
+      }
+    },
+    "label": "El día"
+  },
+  "about": {
+    "label": "La idea",
+    "statement": "Tenés un día y un equipo de 3 para construir algo con <strong>IA</strong> sobre el <strong>MCP de IOL</strong>, el servidor que conecta una cuenta de IOL con <strong>Claude</strong>, <strong>ChatGPT</strong>, <strong>Gemini</strong>, <strong>Grok</strong>, <strong>OpenCode</strong> y otros asistentes.",
+    "link": "Conocé el MCP de IOL"
+  },
+  "ideas": {
+    "label": "Ideas para arrancar",
+    "items": {
+      "summary": {
+        "title": "Resumen de cartera",
+        "desc": "Agrupa los movimientos del mes y muestra la cartera por sector, moneda y tipo de activo."
+      },
+      "options": {
+        "title": "Análisis de opciones",
+        "desc": "Compara volatilidad implícita, griegas y vencimientos de los activos en cartera."
+      },
+      "fixedIncome": {
+        "title": "Simulador de renta fija",
+        "desc": "Calcula cuánto rinde un monto en bonos o letras y explica cada pago."
+      },
+      "exits": {
+        "title": "Salidas automáticas",
+        "desc": "Sugiere stop loss y take profit según el historial de precios de cada posición."
+      }
+    }
+  },
+  "rules": {
+    "title": "Antes de inscribirte",
+    "items": {
+      "selection": {
+        "title": "Inscribirte no confirma tu lugar",
+        "desc": "Revisamos cada inscripción y les damos prioridad a estudiantes universitarios. Si quedás, te avisamos por email y ahí te mandamos la dirección."
+      },
+      "team": {
+        "title": "Solo en equipo",
+        "desc": "Los equipos son de 3 personas. No se aceptan inscripciones individuales. Cada integrante se inscribe con el código de su equipo."
+      },
+      "punctuality": {
+        "title": "Puntualidad",
+        "desc": "No vamos a aceptar participantes que lleguen después de la hora acordada."
+      }
+    }
+  },
+  "organizers": {
+    "cs": {
+      "desc": "Estudiantes y graduados del ITBA, sub rama académica de la IEEE Computer Society. Organizamos charlas, workshops, cursos y hackathons como hackITBA y QuantumJam.",
+      "stats": {
+        "events": "eventos realizados",
+        "people": "participantes",
+        "countries": "países alcanzados"
+      }
+    },
+    "iol": {
+      "desc": "IOL invertironline desarrolló el MCP sobre el que se construyen los proyectos. Con él, cualquier cliente de IOL puede conectar su cuenta a su asistente de IA para consultar la cartera, analizar el mercado y operar, eligiendo qué puede hacer la IA y revocando el acceso cuando quiera. Durante el día va a haber gente de IOL en el evento."
+    },
+    "label": "Organizan"
+  },
+  "finalCta": {
+    "title": "Armá tu equipo y anotate"
+  },
+  "signup": {
+    "backHome": "Volver al inicio",
+    "optional": "opcional",
+    "stepOf": "Paso {{current}} de {{total}}",
+    "back": "Volver",
+    "steps": {
+      "team": "Equipo"
+    },
+    "email": {
+      "title": "Inscripción",
+      "desc": "Todo lo del evento te va a llegar a este email.",
+      "submit": "Enviar código"
+    },
+    "verify": {
+      "title": "Revisá tu email",
+      "desc": "Te mandamos un código de 6 dígitos a {{email}}",
+      "codeLabel": "Código de verificación",
+      "resend": "Reenviar código",
+      "resendIn": "Reenviar en {{seconds}} s",
+      "changeEmail": "Usar otro email",
+      "submit": "Confirmar email"
+    },
+    "personal": {
+      "title": "Datos personales",
+      "desc": "Los usamos para la acreditación y la comida.",
+      "submit": "Continuar"
+    },
+    "socials": {
+      "title": "Contacto y redes",
+      "desc": "Todo opcional. Sirve para que sponsors y otros participantes te encuentren.",
+      "submit": "Continuar"
+    },
+    "team": {
+      "title": "Tu equipo",
+      "desc": "Los equipos son de {{max}} personas. No se aceptan inscripciones individuales.",
+      "submit": "Completar inscripción",
+      "submitting": "Enviando",
+      "choices": {
+        "join": {
+          "title": "Ya tengo equipo",
+          "desc": "Alguien de tu equipo ya lo creó y te pasó el código."
+        },
+        "create": {
+          "title": "Quiero crear un equipo",
+          "desc": "Elegí un nombre y compartí el código con tu equipo."
+        }
+      },
+      "create": {
+        "codeLabel": "Código del equipo",
+        "copy": "Copiar",
+        "copied": "Copiado",
+        "hint": "Cada integrante tiene que inscribirse con este código."
+      },
+      "join": {
+        "checking": "Buscando el equipo…",
+        "members": "{{taken}} de {{max}} lugares ocupados. Hay lugar para vos.",
+        "full": "Este equipo ya tiene {{max}} integrantes. Pedí otro código o creá un equipo nuevo."
+      }
+    },
+    "fields": {
+      "email": "Email",
+      "name": "Nombre y apellido",
+      "dni": "Documento",
+      "age": "Edad",
+      "university": "Universidad",
+      "major": "Carrera",
+      "gradYear": "Año de graduación",
+      "location": "Dónde vivís",
+      "diet": "Restricciones alimentarias",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "x": "X",
+      "instagram": "Instagram",
+      "website": "Sitio o portfolio",
+      "teamName": "Nombre del equipo",
+      "teamCode": "Código del equipo"
+    },
+    "placeholders": {
+      "dni": "DNI o pasaporte",
+      "gradYear": "2027",
+      "location": "Barrio y ciudad",
+      "diet": "Vegetariano, sin TACC, etc.",
+      "github": "github.com/usuario",
+      "linkedin": "linkedin.com/in/usuario",
+      "handle": "@usuario",
+      "website": "tusitio.com"
+    },
+    "success": {
+      "title": "Recibimos tu inscripción",
+      "desc": "Tu lugar todavía no está confirmado. Vamos a revisar las inscripciones y, si quedás, te escribimos con la dirección."
+    },
+    "consent": "Al completar este formulario aceptás compartir tus datos con los organizadores y sponsors del evento.",
+    "validation": {
+      "required": "Este campo es obligatorio",
+      "email": "Ingresá un email válido",
+      "emailTaken": "Este email ya está inscripto",
+      "code": "Ingresá los 6 dígitos",
+      "codeInvalid": "El código no es correcto",
+      "codeExpired": "El código venció. Pedí uno nuevo.",
+      "verificationExpired": "La verificación venció. Pedí un código nuevo.",
+      "tooManyAttempts": "Demasiados intentos. Esperá un rato y probá de nuevo.",
+      "submitFailed": "Algo salió mal. Probá de nuevo.",
+      "numeric": "Ingresá solo números",
+      "year": "Ingresá un año de 4 dígitos",
+      "invalidId": "Ingresá un DNI o pasaporte válido",
+      "team": "Creá un equipo o sumate a uno con su código",
+      "teamNotFound": "No encontramos ningún equipo con ese código",
+      "teamCodeTaken": "Ya existe un equipo con ese nombre. Probá con otro."
+    }
+  },
+  "notFound": {
+    "description": "Esta página no existe.",
+    "cta": "Volver al inicio"
+  },
+  "footer": {
+    "brandDesc": "Comunidad de estudiantes del ITBA. HackaIOL es nuestra hackathon de IA junto a IOL Inversiones.",
+    "columns": {
+      "event": "Evento",
+      "contact": "Contacto"
+    },
+    "links": {
+      "idea": "La idea",
+      "ideas": "Ideas para arrancar",
+      "day": "El día",
+      "organizers": "Organizan",
+      "mcp": "MCP de IOL"
+    },
+    "copyright": "© 2026 Computer Society ITBA"
+  },
+  "a11y": {
+    "home": "Ir al inicio",
+    "instagram": "Instagram",
+    "email": "Email",
+    "youtube": "YouTube",
+    "linkedin": "LinkedIn",
+    "language": "Idioma"
+  }
+}

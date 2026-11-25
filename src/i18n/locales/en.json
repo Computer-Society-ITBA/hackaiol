@@ -1,0 +1,247 @@
+{
+  "hero": {
+    "titleStart": "Hacka",
+    "titleEnd": "IOL",
+    "subtitle": "A one day hackathon to build with AI on top of the IOL Inversiones MCP.",
+    "cta": "Sign up",
+    "terminal": {
+      "status": "IOL MCP",
+      "prompt": "Using the IOL MCP, set a Take Profit on ASML at 12%",
+      "thinking": "Thinking…",
+      "results": {
+        "portfolio": "ASML is in your portfolio",
+        "quote": "Current price and order book retrieved",
+        "created": "Take Profit created"
+      },
+      "answer": "Done. I set a Take Profit on ASML at 12% above your purchase price."
+    }
+  },
+  "event": {
+    "date": {
+      "label": "Date",
+      "value": "DEC 12"
+    },
+    "time": {
+      "label": "Time",
+      "value": "11 to 19 h"
+    },
+    "place": {
+      "label": "Venue",
+      "value": "TBA"
+    },
+    "perks": {
+      "food": {
+        "title": "Food included",
+        "desc": "We take care of food all day. Just bring your laptop."
+      },
+      "recruiting": {
+        "title": "People from IOL at the event",
+        "desc": "People from IOL will be around during the day. A good chance for them to see your work."
+      },
+      "prizes": {
+        "title": "Prizes for the best projects"
+      },
+      "networking": {
+        "title": "Networking after party at the close"
+      }
+    },
+    "label": "The day"
+  },
+  "about": {
+    "label": "The idea",
+    "statement": "You get one day and a team of 3 to build something with <strong>AI</strong> on top of the <strong>IOL MCP</strong>, the server that connects an IOL account with <strong>Claude</strong>, <strong>ChatGPT</strong>, <strong>Gemini</strong>, <strong>Grok</strong>, <strong>OpenCode</strong> and other assistants.",
+    "link": "Learn about the IOL MCP"
+  },
+  "ideas": {
+    "label": "Ideas to get started",
+    "items": {
+      "summary": {
+        "title": "Portfolio summary",
+        "desc": "Groups the month's activity and breaks the portfolio down by sector, currency and asset type."
+      },
+      "options": {
+        "title": "Options analysis",
+        "desc": "Compares implied volatility, greeks and expirations for the assets in the portfolio."
+      },
+      "fixedIncome": {
+        "title": "Fixed income simulator",
+        "desc": "Works out what an amount yields in bonds or bills and explains each payment."
+      },
+      "exits": {
+        "title": "Automatic exits",
+        "desc": "Suggests stop losses and take profits from each position's price history."
+      }
+    }
+  },
+  "rules": {
+    "title": "Before you sign up",
+    "items": {
+      "selection": {
+        "title": "Signing up does not confirm your spot",
+        "desc": "We review every sign up and university students get priority. If you get in, we email you and send the address then."
+      },
+      "team": {
+        "title": "Teams only",
+        "desc": "Teams are 3 people. Individual sign ups are not accepted. Each member signs up with their team code."
+      },
+      "punctuality": {
+        "title": "Punctuality",
+        "desc": "Participants who arrive after the agreed time will not be admitted."
+      }
+    }
+  },
+  "organizers": {
+    "cs": {
+      "desc": "ITBA students and alumni, an academic sub-branch of the IEEE Computer Society. We run talks, workshops, courses and hackathons like hackITBA and QuantumJam.",
+      "stats": {
+        "events": "events held",
+        "people": "participants",
+        "countries": "countries reached"
+      }
+    },
+    "iol": {
+      "desc": "IOL invertironline built the MCP the projects are built on. With it, any IOL client can connect their account to their AI assistant to check their portfolio, analyze the market and trade, choosing what the AI can do and revoking access whenever they want. People from IOL will be around during the day."
+    },
+    "label": "Organized by"
+  },
+  "finalCta": {
+    "title": "Get your team together and sign up"
+  },
+  "signup": {
+    "backHome": "Back to home",
+    "optional": "optional",
+    "stepOf": "Step {{current}} of {{total}}",
+    "back": "Back",
+    "steps": {
+      "team": "Team"
+    },
+    "email": {
+      "title": "Sign up",
+      "desc": "Everything about the event will reach you at this email.",
+      "submit": "Send code"
+    },
+    "verify": {
+      "title": "Check your email",
+      "desc": "We sent a 6-digit code to {{email}}",
+      "codeLabel": "Verification code",
+      "resend": "Resend code",
+      "resendIn": "Resend in {{seconds}} s",
+      "changeEmail": "Use another email",
+      "submit": "Confirm email"
+    },
+    "personal": {
+      "title": "Personal info",
+      "desc": "We use it for accreditation and catering.",
+      "submit": "Continue"
+    },
+    "socials": {
+      "title": "Contact and socials",
+      "desc": "All optional. It helps sponsors and other participants find you.",
+      "submit": "Continue"
+    },
+    "team": {
+      "title": "Your team",
+      "desc": "Teams are {{max}} people. Individual sign ups are not accepted.",
+      "submit": "Complete sign up",
+      "submitting": "Sending",
+      "choices": {
+        "join": {
+          "title": "I already have a team",
+          "desc": "Someone on your team already created it and gave you the code."
+        },
+        "create": {
+          "title": "I want to create a team",
+          "desc": "Pick a name and share the code with your team."
+        }
+      },
+      "create": {
+        "codeLabel": "Team code",
+        "copy": "Copy",
+        "copied": "Copied",
+        "hint": "Every member has to sign up with this code."
+      },
+      "join": {
+        "checking": "Looking for the team…",
+        "members": "{{taken}} of {{max}} spots taken. There is room for you.",
+        "full": "This team already has {{max}} members. Ask for another code or create a new team."
+      }
+    },
+    "fields": {
+      "email": "Email",
+      "name": "Full name",
+      "dni": "ID number",
+      "age": "Age",
+      "university": "University",
+      "major": "Degree",
+      "gradYear": "Expected graduation",
+      "location": "Where you live",
+      "diet": "Dietary restrictions",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "x": "X",
+      "instagram": "Instagram",
+      "website": "Website or portfolio",
+      "teamName": "Team name",
+      "teamCode": "Team code"
+    },
+    "placeholders": {
+      "dni": "DNI or passport",
+      "gradYear": "2027",
+      "location": "Neighbourhood and city",
+      "diet": "Vegetarian, gluten-free, etc.",
+      "github": "github.com/username",
+      "linkedin": "linkedin.com/in/username",
+      "handle": "@username",
+      "website": "yoursite.com"
+    },
+    "success": {
+      "title": "We got your sign up",
+      "desc": "Your spot is not confirmed yet. We will review the sign ups and, if you get in, we will email you the address."
+    },
+    "consent": "By completing this form you agree to share your data with the event organizers and sponsors.",
+    "validation": {
+      "required": "This field is required",
+      "email": "Enter a valid email",
+      "emailTaken": "This email is already signed up",
+      "code": "Enter all 6 digits",
+      "codeInvalid": "That code is not correct",
+      "codeExpired": "The code expired. Request a new one.",
+      "verificationExpired": "The verification expired. Request a new code.",
+      "tooManyAttempts": "Too many attempts. Wait a while and try again.",
+      "submitFailed": "Something went wrong. Try again.",
+      "numeric": "Enter numbers only",
+      "year": "Enter a 4-digit year",
+      "invalidId": "Enter a valid ID or passport number",
+      "team": "Create a team or join one with its code",
+      "teamNotFound": "No team found with that code",
+      "teamCodeTaken": "A team with that name already exists. Try another one."
+    }
+  },
+  "notFound": {
+    "description": "This page does not exist.",
+    "cta": "Back to home"
+  },
+  "footer": {
+    "brandDesc": "Student community at ITBA. HackaIOL is our AI hackathon together with IOL Inversiones.",
+    "columns": {
+      "event": "Event",
+      "contact": "Contact"
+    },
+    "links": {
+      "idea": "The idea",
+      "ideas": "Ideas to get started",
+      "day": "The day",
+      "organizers": "Organized by",
+      "mcp": "IOL MCP"
+    },
+    "copyright": "© 2026 Computer Society ITBA"
+  },
+  "a11y": {
+    "home": "Go to home",
+    "instagram": "Instagram",
+    "email": "Email",
+    "youtube": "YouTube",
+    "linkedin": "LinkedIn",
+    "language": "Language"
+  }
+}

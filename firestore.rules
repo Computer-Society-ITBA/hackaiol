@@ -1,0 +1,13 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // All sign-up data (emailVerifications, signups, teams) is written and read
+    // exclusively by Cloud Functions through the Admin SDK, which bypasses
+    // these rules entirely. No client should ever read or write Firestore
+    // directly here.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
