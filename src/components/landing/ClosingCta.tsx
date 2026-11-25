@@ -33,7 +33,7 @@ export function ClosingCta() {
   )
 
   return (
-    <section className="relative overflow-x-clip py-24">
+    <section className="relative overflow-x-clip pt-6 pb-20 md:pt-10 md:pb-24">
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-[62%] -mx-[5vw] rotate-[1.5deg] overflow-hidden bg-white/[0.06] py-3 text-sm font-semibold tracking-[0.2em] text-white/40 uppercase"
