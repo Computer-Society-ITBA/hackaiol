@@ -34,8 +34,8 @@ const SIGNUP: RouteMeta = {
 }
 
 // schema.org data so search engines understand this is an event, when it
-// is and who runs it. TODO: add `location` (a Place with its address) once
-// the venue is confirmed; Google needs it to show the event rich result.
+// is and who runs it. TODO: the venue is still TBA, so `location` only
+// names the city. Add the venue name and streetAddress once confirmed.
 const EVENT_JSON_LD = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Event',
@@ -49,6 +49,24 @@ const EVENT_JSON_LD = JSON.stringify({
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   isAccessibleForFree: true,
   inLanguage: 'es',
+  location: {
+    '@type': 'Place',
+    name: 'Ciudad Autónoma de Buenos Aires',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Ciudad Autónoma de Buenos Aires',
+      addressRegion: 'CABA',
+      addressCountry: 'AR',
+    },
+  },
+  offers: {
+    '@type': 'Offer',
+    url: SITE_URL + SIGNUP.path,
+    price: 0,
+    priceCurrency: 'ARS',
+    availability: 'https://schema.org/InStock',
+    validFrom: '2026-11-25T00:00:00-03:00',
+  },
   organizer: {
     '@type': 'Organization',
     name: 'Computer Society ITBA',
