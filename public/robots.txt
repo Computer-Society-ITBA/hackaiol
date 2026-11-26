@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://csitba-hackaiol.web.app/sitemap.xml

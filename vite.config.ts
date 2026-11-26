@@ -20,7 +20,7 @@ type RouteMeta = {
 // app, so every route that needs its own preview gets its own HTML file.
 const HOME: RouteMeta = {
   path: '/',
-  title: 'HackaIOL',
+  title: 'HackaIOL, hackathon de IA de ITBA e IOL Inversiones',
   description:
     'Una hackathon de un día para construir con IA sobre el MCP de IOL Inversiones. 12 de diciembre, de 11 a 19 h.',
   image: '/og/home.jpg',
@@ -32,6 +32,34 @@ const SIGNUP: RouteMeta = {
     'Armá tu equipo de 3 y anotate a la hackathon de IA de Computer Society ITBA e IOL Inversiones.',
   image: '/og/signup.jpg',
 }
+
+// schema.org data so search engines understand this is an event, when it
+// is and who runs it. TODO: add `location` (a Place with its address) once
+// the venue is confirmed; Google needs it to show the event rich result.
+const EVENT_JSON_LD = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: 'HackaIOL',
+  description: HOME.description,
+  url: SITE_URL + '/',
+  image: SITE_URL + HOME.image,
+  startDate: '2026-12-12T11:00:00-03:00',
+  endDate: '2026-12-12T19:00:00-03:00',
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  isAccessibleForFree: true,
+  inLanguage: 'es',
+  organizer: {
+    '@type': 'Organization',
+    name: 'Computer Society ITBA',
+    url: 'https://www.csitba.com.ar/',
+  },
+  sponsor: {
+    '@type': 'Organization',
+    name: 'IOL Inversiones',
+    url: 'https://www.invertironline.com/',
+  },
+})
 
 function renderMeta(meta: RouteMeta): string {
   const url = SITE_URL + meta.path
@@ -54,6 +82,7 @@ function renderMeta(meta: RouteMeta): string {
     `<meta name="twitter:title" content="${meta.title}" />`,
     `<meta name="twitter:description" content="${meta.description}" />`,
     `<meta name="twitter:image" content="${image}" />`,
+    `<script type="application/ld+json">${EVENT_JSON_LD}</script>`,
   ].join('\n    ')
 }
 

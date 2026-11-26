@@ -18,11 +18,21 @@ const supportedLngs = ['es', 'en'] as const
 // Spanish, any English gets English, anything else falls back to Spanish.
 // There is no switcher, so nothing is remembered. A ?lang=en link still
 // forces a language, which is handy for testing.
+//
+// Search and link preview crawlers browse with English set, which would get
+// the site indexed in English. They always get Spanish, the event's language.
+const isCrawler =
+  typeof navigator !== 'undefined' &&
+  /bot|crawler|spider|slurp|facebookexternalhit|embedly|preview/i.test(
+    navigator.userAgent,
+  )
+
 void i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
+    lng: isCrawler ? 'es' : undefined,
     fallbackLng: 'es',
     supportedLngs: [...supportedLngs],
     nonExplicitSupportedLngs: true,
