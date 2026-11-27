@@ -249,5 +249,149 @@
     "email": "Email",
     "youtube": "YouTube",
     "linkedin": "LinkedIn"
+  },
+  "admin": {
+    "title": "HackaIOL backoffice",
+    "loading": "Loading data",
+    "retry": "Try again",
+    "refresh": "Refresh",
+    "signOut": "Sign out",
+    "close": "Close",
+    "copy": "Copy emails",
+    "copied": "Emails copied",
+    "save": "Save",
+    "cancel": "Cancel",
+    "all": "All",
+    "nav": {
+      "participants": "Participants",
+      "teams": "Teams"
+    },
+    "login": {
+      "title": "Sign in to the HackaIOL backoffice",
+      "heading": "Backoffice",
+      "subtitle": "Use the same credentials as the QuantumJam backoffice",
+      "username": "Username",
+      "password": "Password",
+      "submit": "Sign in",
+      "submitting": "Signing in",
+      "invalid": "Wrong username or password",
+      "unavailable": "Could not reach the server. Please try again",
+      "expired": "Your session expired. Please sign in again"
+    },
+    "errors": {
+      "unauthorized": "Your session expired",
+      "unavailable": "Could not reach the server. Please try again",
+      "not-found": "It no longer exists. Refresh the data",
+      "already-exists": "A team with that name already exists",
+      "resource-exhausted": "That team is already full",
+      "invalid-argument": "Check what you entered"
+    },
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    },
+    "actions": {
+      "pending": "Mark pending",
+      "accepted": "Accept",
+      "rejected": "Reject"
+    },
+    "notices": {
+      "moved": "Updated the team of {{name}}",
+      "statusOne": "{{name}} is now {{status}}",
+      "statusMany_one": "{{count}} participant is now {{status}}",
+      "statusMany_other": "{{count}} participants are now {{status}}",
+      "renamed": "Team renamed to {{name}}",
+      "deleted": "Deleted team {{name}}"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "dni": "ID or passport",
+      "age": "Age",
+      "university": "University",
+      "major": "Major",
+      "gradYear": "Graduation year",
+      "location": "Location",
+      "diet": "Diet",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "x": "X",
+      "instagram": "Instagram",
+      "website": "Website",
+      "teamChoice": "How they joined",
+      "status": "Status",
+      "createdAt": "Signed up",
+      "teamName": "Team name",
+      "teamSize": "Team size"
+    },
+    "teamChoice": {
+      "create": "Created the team",
+      "join": "Joined with a code"
+    },
+    "filters": {
+      "field": "Field",
+      "op": "Condition",
+      "value": "Value",
+      "remove": "Remove",
+      "add": "Add filter",
+      "clear": "Clear filters",
+      "ops": {
+        "contains": "contains",
+        "is": "is",
+        "empty": "is empty",
+        "notEmpty": "is not empty"
+      }
+    },
+    "participants": {
+      "team": "Team",
+      "moveTo": "Move to",
+      "newTeam": "New team",
+      "newTeamName": "New team name",
+      "move": "Move",
+      "lastMemberHint": "They are the last member, so their current team gets deleted",
+      "details": "Details",
+      "select": "Select {{name}}",
+      "selectAll": "Select all",
+      "summary": "{{total}} sign-ups in {{teams}} teams, in sign-up order",
+      "copyEmails_one": "Copy {{count}} email",
+      "copyEmails_other": "Copy {{count}} emails",
+      "exportCsv": "Export CSV",
+      "search": "Search every field",
+      "groupByTeam": "Group by team",
+      "empty": "Nobody matches these filters",
+      "selected_one": "{{count}} selected",
+      "selected_other": "{{count}} selected",
+      "clearSelection": "Clear selection"
+    },
+    "teams": {
+      "none": "No team",
+      "acceptAll": "Accept team",
+      "rejectAll": "Reject team",
+      "summary_one": "{{total}} teams, {{full}} full, {{count}} participant without a team",
+      "summary_other": "{{total}} teams, {{full}} full, {{count}} participants without a team",
+      "search": "Search by team or member name",
+      "size": "Size",
+      "sizeFilter": {
+        "all": "Any size",
+        "full": "Full",
+        "incomplete": "Not full"
+      },
+      "statusFilter": {
+        "all": "Any status",
+        "allAccepted": "All accepted",
+        "anyPending": "Has pending",
+        "anyRejected": "Has rejected"
+      },
+      "empty": "No team matches these filters",
+      "newName": "New name",
+      "created": "Created {{time}}",
+      "byAdmin": "Created from the backoffice",
+      "noMembers": "No members",
+      "rename": "Rename",
+      "delete": "Delete",
+      "confirmDelete_one": "Delete {{name}}? Its member stays signed up, with no team.",
+      "confirmDelete_other": "Delete {{name}}? Its {{count}} members stay signed up, with no team."
+    }
   }
 }

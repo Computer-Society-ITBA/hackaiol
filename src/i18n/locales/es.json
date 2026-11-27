@@ -249,5 +249,149 @@
     "email": "Email",
     "youtube": "YouTube",
     "linkedin": "LinkedIn"
+  },
+  "admin": {
+    "title": "Backoffice HackaIOL",
+    "loading": "Cargando datos",
+    "retry": "Reintentar",
+    "refresh": "Actualizar",
+    "signOut": "Cerrar sesión",
+    "close": "Cerrar",
+    "copy": "Copiar emails",
+    "copied": "Emails copiados",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "all": "Todos",
+    "nav": {
+      "participants": "Participantes",
+      "teams": "Equipos"
+    },
+    "login": {
+      "title": "Ingresar al backoffice de HackaIOL",
+      "heading": "Backoffice",
+      "subtitle": "Usá las mismas credenciales que el backoffice de QuantumJam",
+      "username": "Usuario",
+      "password": "Contraseña",
+      "submit": "Ingresar",
+      "submitting": "Ingresando",
+      "invalid": "Usuario o contraseña incorrectos",
+      "unavailable": "No pudimos conectar con el servidor. Probá de nuevo",
+      "expired": "Tu sesión expiró. Volvé a ingresar"
+    },
+    "errors": {
+      "unauthorized": "Tu sesión expiró",
+      "unavailable": "No pudimos conectar con el servidor. Probá de nuevo",
+      "not-found": "Ya no existe. Actualizá los datos",
+      "already-exists": "Ya hay un equipo con ese nombre",
+      "resource-exhausted": "Ese equipo ya está completo",
+      "invalid-argument": "Revisá los datos ingresados"
+    },
+    "status": {
+      "pending": "Pendiente",
+      "accepted": "Aceptado",
+      "rejected": "Rechazado"
+    },
+    "actions": {
+      "pending": "Pasar a pendiente",
+      "accepted": "Aceptar",
+      "rejected": "Rechazar"
+    },
+    "notices": {
+      "moved": "Equipo de {{name}} actualizado",
+      "statusOne": "{{name}} ahora está {{status}}",
+      "statusMany_one": "{{count}} participante pasó a {{status}}",
+      "statusMany_other": "{{count}} participantes pasaron a {{status}}",
+      "renamed": "Equipo renombrado a {{name}}",
+      "deleted": "Equipo {{name}} eliminado"
+    },
+    "fields": {
+      "name": "Nombre",
+      "email": "Email",
+      "dni": "DNI o pasaporte",
+      "age": "Edad",
+      "university": "Universidad",
+      "major": "Carrera",
+      "gradYear": "Año de egreso",
+      "location": "Ubicación",
+      "diet": "Alimentación",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "x": "X",
+      "instagram": "Instagram",
+      "website": "Sitio web",
+      "teamChoice": "Cómo se sumó",
+      "status": "Estado",
+      "createdAt": "Inscripción",
+      "teamName": "Nombre del equipo",
+      "teamSize": "Integrantes del equipo"
+    },
+    "teamChoice": {
+      "create": "Creó el equipo",
+      "join": "Se unió con código"
+    },
+    "filters": {
+      "field": "Campo",
+      "op": "Condición",
+      "value": "Valor",
+      "remove": "Quitar",
+      "add": "Agregar filtro",
+      "clear": "Limpiar filtros",
+      "ops": {
+        "contains": "contiene",
+        "is": "es igual a",
+        "empty": "está vacío",
+        "notEmpty": "no está vacío"
+      }
+    },
+    "participants": {
+      "team": "Equipo",
+      "moveTo": "Mover a",
+      "newTeam": "Equipo nuevo",
+      "newTeamName": "Nombre del equipo nuevo",
+      "move": "Mover",
+      "lastMemberHint": "Es el último integrante, así que su equipo actual se elimina",
+      "details": "Datos",
+      "select": "Seleccionar a {{name}}",
+      "selectAll": "Seleccionar todos",
+      "summary": "{{total}} inscriptos en {{teams}} equipos, en orden de inscripción",
+      "copyEmails_one": "Copiar {{count}} email",
+      "copyEmails_other": "Copiar {{count}} emails",
+      "exportCsv": "Exportar CSV",
+      "search": "Buscar en todos los campos",
+      "groupByTeam": "Agrupar por equipo",
+      "empty": "Nadie coincide con estos filtros",
+      "selected_one": "{{count}} seleccionado",
+      "selected_other": "{{count}} seleccionados",
+      "clearSelection": "Deseleccionar"
+    },
+    "teams": {
+      "none": "Sin equipo",
+      "acceptAll": "Aceptar equipo",
+      "rejectAll": "Rechazar equipo",
+      "summary_one": "{{total}} equipos, {{full}} completos, {{count}} participante sin equipo",
+      "summary_other": "{{total}} equipos, {{full}} completos, {{count}} participantes sin equipo",
+      "search": "Buscar por nombre de equipo o integrante",
+      "size": "Tamaño",
+      "sizeFilter": {
+        "all": "Cualquier tamaño",
+        "full": "Completos",
+        "incomplete": "Incompletos"
+      },
+      "statusFilter": {
+        "all": "Cualquier estado",
+        "allAccepted": "Todos aceptados",
+        "anyPending": "Con pendientes",
+        "anyRejected": "Con rechazados"
+      },
+      "empty": "Ningún equipo coincide con estos filtros",
+      "newName": "Nombre nuevo",
+      "created": "Creado {{time}}",
+      "byAdmin": "Creado desde el backoffice",
+      "noMembers": "Sin integrantes",
+      "rename": "Renombrar",
+      "delete": "Eliminar",
+      "confirmDelete_one": "¿Eliminar {{name}}? Su integrante sigue inscripto, sin equipo.",
+      "confirmDelete_other": "¿Eliminar {{name}}? Sus {{count}} integrantes siguen inscriptos, sin equipo."
+    }
   }
 }

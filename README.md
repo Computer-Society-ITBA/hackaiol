@@ -52,16 +52,18 @@ apps. This app is isolated from them in three ways.
 
 ### Functions
 
-| File              | Exports                                      |
-| ----------------- | -------------------------------------------- |
-| `verification.ts` | `hackaiolRequestCode`, `hackaiolConfirmCode` |
-| `signup.ts`       | `hackaiolSubmitSignup`, `hackaiolLookupTeam` |
-| `drafts.ts`       | `hackaiolSaveSignupDraft`                    |
-| `admin.ts`        | Admin SDK bootstrap pinned to `hackaiol`     |
-| `lib/drafts.ts`   | Draft doc refs, loading, session check       |
-| `lib/otp.ts`      | Code generation, hashing, rate-limit limits  |
-| `lib/team.ts`     | `teamIdFrom()`, `MAX_TEAM_SIZE` (3)          |
-| `lib/email.ts`    | Email templates and Gmail SMTP sending       |
+| File               | Exports                                      |
+| ------------------ | -------------------------------------------- |
+| `verification.ts`  | `hackaiolRequestCode`, `hackaiolConfirmCode` |
+| `signup.ts`        | `hackaiolSubmitSignup`, `hackaiolLookupTeam` |
+| `drafts.ts`        | `hackaiolSaveSignupDraft`                    |
+| `backoffice.ts`    | `hackaiolAdminApi` (backoffice API)          |
+| `admin.ts`         | Admin SDK bootstrap pinned to `hackaiol`     |
+| `lib/adminAuth.ts` | Backoffice credentials and session tokens    |
+| `lib/drafts.ts`    | Draft doc refs, loading, session check       |
+| `lib/otp.ts`       | Code generation, hashing, rate-limit limits  |
+| `lib/team.ts`      | `teamIdFrom()`, `MAX_TEAM_SIZE` (3)          |
+| `lib/email.ts`     | Email templates and Gmail SMTP sending       |
 
 `hackaiolRequestCode` emails a 6-digit code (30s resend cooldown, 5
 requests per hour, 5 wrong attempts max). `hackaiolConfirmCode`
@@ -106,6 +108,39 @@ participation rules. Event date, time, venue and page URL are
 placeholders at the top of `functions/src/lib/email.ts` (flagged with
 `TODO`). Under the Functions emulator, emails are logged instead of
 sent.
+
+### Backoffice (`/admin`)
+
+`/admin/participants` lists sign-ups in the order they came in, and can
+group them by team. Organizers filter on any participant or team field,
+change statuses (for one person, a selection or a whole team), move
+people between teams and export CSV. Filters live in the URL, so you
+can send a filtered view to another organizer. `/admin/teams` renames
+and deletes teams.
+
+`AdminLayout` sends anyone without a live session to `/admin/login`
+before a screen renders. The backoffice loads in its own chunks, so the
+public pages never download it.
+
+The data goes through `hackaiolAdminApi`, an `onRequest` function that
+Hosting serves at `/api/admin/**`. It checks the same
+`QUANTUMJAM_ADMIN_USERNAME` / `QUANTUMJAM_ADMIN_PASSWORD` Functions
+secrets as the quantum-jam-csitba backoffice, so one set of credentials
+opens both. `POST /api/admin/session` checks them over HTTP Basic and
+returns a token signed with them, valid for 12 hours and kept in
+`sessionStorage`; every other route needs that token. Rotating either
+secret signs everyone out. The secrets already exist in the project,
+so you can deploy without setting anything up.
+
+Renaming a team only changes its display name: the code stays the same,
+so invite codes already emailed keep working. Moving the last member out
+of a team deletes it. Deleting a team leaves its members signed up with
+no team.
+
+Locally, `npm run dev` proxies `/api/admin` to the Functions emulator.
+Put test credentials in `functions/.secret.local` (git-ignored) as
+`QUANTUMJAM_ADMIN_USERNAME=...` and `QUANTUMJAM_ADMIN_PASSWORD=...`,
+then run the emulators as above.
 
 ### Deploying
 
