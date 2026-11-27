@@ -3,8 +3,21 @@
     "site": "csitba-hackaiol",
     "public": "dist",
     "cleanUrls": true,
+    "headers": [
+      {
+        "source": "/admin{,/**}",
+        "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+      }
+    ],
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
+      {
+        "source": "/api/admin/**",
+        "function": {
+          "functionId": "hackaiolAdminApi",
+          "region": "us-central1"
+        }
+      },
       {
         "source": "**",
         "destination": "/index.html"

@@ -135,6 +135,17 @@ function routeMeta(): Plugin {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), routeMeta()],
+  // Hosting rewrites /api/admin/** to hackaiolAdminApi. In dev the same
+  // path goes to that function on the local Functions emulator.
+  server: {
+    proxy: {
+      '/api/admin': {
+        target:
+          'http://127.0.0.1:5001/webpage-36e40/us-central1/hackaiolAdminApi',
+        changeOrigin: true,
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(import.meta.dirname, './src'),
