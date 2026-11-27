@@ -43,3 +43,6 @@ ui-debug.log
 # Local AI assistant instructions
 AGENTS.md
 CLAUDE.md
+
+# Participant exports (personal data)
+exports/
