@@ -13,3 +13,4 @@ export {
 export {hackaiolSubmitSignup, hackaiolLookupTeam} from "./signup";
 export {hackaiolSaveSignupDraft} from "./drafts";
 export {hackaiolAdminApi} from "./backoffice";
+export {hackaiolPromoTrack} from "./promoTracking";

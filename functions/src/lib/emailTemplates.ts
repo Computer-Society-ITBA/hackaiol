@@ -43,6 +43,8 @@ const COLOR = {
   inkSoft: "#2e7a55",
 };
 
+// Most clients (Gmail, Outlook) don't load Barlow and fall back to Arial.
+// Weights stay at 400 and 700: at 800, Windows swaps Arial for Arial Black.
 const FONT = "'Barlow',Arial,Helvetica,sans-serif";
 const MONO = "'Courier New',Courier,monospace";
 
@@ -52,7 +54,7 @@ const TYPE = {
     "margin:0;font-size:12px;line-height:16px;font-weight:700;" +
     `letter-spacing:0.14em;text-transform:uppercase;color:${COLOR.green};`,
   title:
-    "margin:8px 0 0;font-size:30px;line-height:1.15;font-weight:800;" +
+    "margin:8px 0 0;font-size:30px;line-height:1.15;font-weight:700;" +
     `letter-spacing:-0.02em;color:${COLOR.text};`,
   heading:
     "margin:0;font-size:16px;line-height:24px;font-weight:700;" +
@@ -126,7 +128,7 @@ function renderStub(): string {
  */
 function renderWordmark(): string {
   return `<p style="margin:0 0 28px;font-size:40px;line-height:0.9;
-    font-weight:800;letter-spacing:-0.045em;color:${COLOR.text};">Hacka<span
+    font-weight:700;letter-spacing:-0.045em;color:${COLOR.text};">Hacka<span
     style="color:${COLOR.green};font-style:italic;">IOL</span></p>`;
 }
 
@@ -164,7 +166,7 @@ function renderButton(href: string, label: string): string {
         <td bgcolor="${COLOR.green}" style="background-color:${COLOR.green};
           border-radius:10px;">
           <a href="${href}" style="display:inline-block;padding:16px 28px;
-            font-family:${FONT};font-size:18px;line-height:1;font-weight:800;
+            font-family:${FONT};font-size:18px;line-height:1;font-weight:700;
             text-transform:uppercase;color:${COLOR.ink};
             text-decoration:none;">${label}&nbsp;&nbsp;<span
             style="font-size:10px;vertical-align:middle;">&#9650;</span></a>
@@ -178,9 +180,14 @@ function renderButton(href: string, label: string): string {
  * wordmark (with the green event stub on top when asked) and the footer.
  * @param {string} bodyHtml Inner content HTML.
  * @param {boolean} withStub Whether to show the event data stub.
+ * @param {boolean} withTagline Whether the footer says what HackaIOL is.
  * @return {string} The full HTML document.
  */
-function renderShell(bodyHtml: string, withStub = false): string {
+function renderShell(
+  bodyHtml: string,
+  withStub = false,
+  withTagline = true,
+): string {
   const [iol, cs] = LOGOS;
   return `<!DOCTYPE html>
 <html lang="es">
@@ -242,11 +249,11 @@ function renderShell(bodyHtml: string, withStub = false): string {
             </tr>
             <tr>
               <td align="center" style="padding:28px 8px 0;">
-                <p style="${TYPE.small}">
+                ${withTagline ? `<p style="${TYPE.small};margin-bottom:12px;">
                   HackaIOL es una hackathon de Computer Society ITBA junto a
                   IOL Inversiones.
-                </p>
-                <p style="${TYPE.small};margin-top:12px;">
+                </p>` : ""}
+                <p style="${TYPE.small}">
                   <a href="${INSTAGRAM_URL}"
                     style="color:${COLOR.textDim};">Instagram</a>
                   &nbsp;&nbsp;&nbsp;
@@ -410,4 +417,148 @@ export function signupConfirmationText(
       .join("") +
     `${teamStatus(team)}\n\n` +
     `Página del evento ${EVENT_PAGE_URL}`;
+}
+
+const SIGNUP_URL = `${EVENT_PAGE_URL}/signup`;
+
+export const PROMO_SUBJECT =
+  "Hackathon de IA para estudiantes, 12 de diciembre";
+
+const PROMO_HOOK = "Tu IA ya puede invertir. Ahora construí algo con ella.";
+const PROMO_LINE = "Una hackathon para estudiantes, del equipo que organiza " +
+  "HackITBA y QuantumJam. El 12 de diciembre tenés un día y un equipo de 3, " +
+  "con el MCP de IOL y el asistente que quieras.";
+const PROMO_CTA = "Quiero participar";
+
+// What IOL is, from its own site (invertironline.com and its jobs page).
+// The hiring part stays a soft last line on purpose.
+const IOL_TITLE = "¿Qué es IOL Inversiones?";
+const IOL_LINES = [
+  "La plataforma con la que más de 2 millones de personas invierten en " +
+    "la bolsa de Argentina y Estados Unidos, hace más de 25 años.",
+  "Su equipo de tecnología construye el sitio y el MCP que vas a usar en " +
+    "la hackathon, y siempre está sumando gente.",
+];
+
+// The arrow circle of the promo button, as an inline image: a text arrow
+// sits at a different height in every font, so it never looked centered.
+// Attach it with the logos when sending the promo.
+export const ARROW = {
+  cid: "cta-arrow", file: "cta-arrow.png", width: 44, height: 44,
+};
+export const PROMO_IMAGES = [...LOGOS, ARROW];
+
+/**
+ * The promo's call to action: a full-width green block with the label on
+ * the left and an arrow in a dark circle on the right.
+ * @param {string} href Link target.
+ * @param {string} label Button text.
+ * @return {string} Table HTML.
+ */
+function renderWideButton(href: string, label: string): string {
+  return `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+      border="0">
+      <tr>
+        <td bgcolor="${COLOR.green}" style="background-color:${COLOR.green};
+          border-radius:14px;">
+          <a href="${href}" style="display:block;padding:10px 10px 10px 24px;
+            font-family:${FONT};text-decoration:none;">
+            <table role="presentation" width="100%" cellpadding="0"
+              cellspacing="0" border="0">
+              <tr>
+                <td valign="middle" style="font-size:19px;line-height:24px;
+                  font-weight:700;letter-spacing:-0.01em;
+                  color:${COLOR.ink};">${label}</td>
+                <td valign="middle" align="right" width="44">
+                  <img src="cid:${ARROW.cid}" width="${ARROW.width}"
+                    height="${ARROW.height}" alt="&#8594;"
+                    style="display:block;border:0;">
+                </td>
+              </tr>
+            </table>
+          </a>
+        </td>
+      </tr>
+    </table>`;
+}
+
+/**
+ * The "what is IOL" box: the IOL logo, a question and two short lines.
+ * @return {string} Table HTML.
+ */
+function renderIolSection(): string {
+  const iol = LOGOS[0];
+  const lines = IOL_LINES.map((text, i) => `
+    <p style="${TYPE.small};margin-top:${i ? 8 : 10}px;">
+      ${escapeHtml(text)}</p>`).join("");
+  return `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+      border="0">
+      <tr>
+        <td bgcolor="${COLOR.coupon}" style="background-color:${COLOR.coupon};
+          border:1px solid ${COLOR.border};border-radius:12px;
+          padding:22px 22px 24px;">
+          <img src="cid:${iol.cid}" width="${iol.width}"
+            height="${iol.height}" alt="IOL Inversiones"
+            style="display:block;border:0;">
+          <p style="${TYPE.heading};margin-top:16px;">
+            ${escapeHtml(IOL_TITLE)}</p>
+          ${lines}
+        </td>
+      </tr>
+    </table>`;
+}
+
+/**
+ * The promo's tracked links for one recipient (see promoTracking.ts):
+ * the click URL for the button and the open pixel. Without a token, as in
+ * previews, the button goes straight to the sign up page.
+ * @param {string} [token] The recipient's tracking token.
+ * @return {{click: string, pixel: string}} URLs, pixel empty if untracked.
+ */
+function promoLinks(token?: string): {click: string, pixel: string} {
+  if (!token) return {click: SIGNUP_URL, pixel: ""};
+  return {
+    click: `${EVENT_PAGE_URL}/api/t/c/${token}`,
+    pixel: `${EVENT_PAGE_URL}/api/t/o/${token}`,
+  };
+}
+
+/**
+ * Renders the promotional email for past participants of other events:
+ * a greeting, a hook, one line, the sign up button and a short box on
+ * what IOL is. The event data is in the green stub.
+ * @param {string} firstName The recipient's first name.
+ * @param {string} [token] Tracking token for opens and clicks.
+ * @return {string} The full HTML document.
+ */
+export function renderPromoHtml(firstName: string, token?: string): string {
+  const {click, pixel} = promoLinks(token);
+  return renderShell(`
+    <p style="${TYPE.eyebrow}">Hola ${escapeHtml(firstName)}</p>
+    <p style="${TYPE.title}">${escapeHtml(PROMO_HOOK)}</p>
+    <p style="${TYPE.body};margin-top:14px;">${escapeHtml(PROMO_LINE)}</p>
+    ${space(28)}
+    ${renderWideButton(click, PROMO_CTA)}
+    ${space(32)}
+    ${renderIolSection()}
+    ${pixel ? `<img src="${pixel}" width="1" height="1" alt=""
+      style="display:block;width:1px;height:1px;border:0;">` : ""}
+  `, true, false);
+}
+
+/**
+ * Plain-text version of the promotional email.
+ * @param {string} firstName The recipient's first name.
+ * @param {string} [token] Tracking token for clicks.
+ * @return {string} Text body.
+ */
+export function promoText(firstName: string, token?: string): string {
+  return `Hola ${firstName}\n\n` +
+    `${PROMO_HOOK}\n\n` +
+    `${PROMO_LINE}\n\n` +
+    `${PROMO_CTA} ${promoLinks(token).click}\n\n` +
+    `${IOL_TITLE}\n` +
+    IOL_LINES.join(" ");
 }

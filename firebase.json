@@ -19,6 +19,13 @@
         }
       },
       {
+        "source": "/api/t/**",
+        "function": {
+          "functionId": "hackaiolPromoTrack",
+          "region": "us-central1"
+        }
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
